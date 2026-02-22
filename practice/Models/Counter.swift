@@ -43,9 +43,16 @@ struct Counter {
   }
 }
 
-
 struct counter2 {
-    
-    
-    
+
+  private(set) var value: Int
+
+  init(value: Int = 0) {
+    self.value = value
+  }
+
+  mutating func inc(incValue value: Int = 1) {
+    self.value += value
+  }
+
 }

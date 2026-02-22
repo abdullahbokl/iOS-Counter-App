@@ -1,32 +1,10 @@
-//
-//  CounterView.swift
-//  practice
-//
-//  Created by Abdullah Elbokl on 22/02/2026.
-//
-
 import SwiftUI
 
-// MARK: - CounterView
-
-/// The main counter screen.
-///
-/// This view owns the `CounterViewModel` via `@StateObject`,
-/// meaning it is the single source of truth for the counter state.
-/// It composes reusable `CounterButton` components for each action.
 struct CounterView: View {
-
-  // MARK: - State
-
-  /// The ViewModel that drives this view.
-  /// `@StateObject` ensures it survives SwiftUI view re-creation.
   @StateObject private var viewModel = CounterViewModel()
-
-  // MARK: - Body
 
   var body: some View {
     ZStack {
-      // Background
       Color.appBackground
         .ignoresSafeArea()
 
@@ -44,8 +22,6 @@ struct CounterView: View {
 // MARK: - Subviews
 
 extension CounterView {
-
-  /// The app title at the top of the screen.
   fileprivate var headerSection: some View {
     VStack(spacing: 4) {
       Text("Counter")
@@ -59,7 +35,6 @@ extension CounterView {
     }
   }
 
-  /// The large counter value display with animation.
   fileprivate var counterDisplaySection: some View {
     Text(viewModel.displayValue)
       .font(.system(size: 96, weight: .bold, design: .rounded))
@@ -68,7 +43,6 @@ extension CounterView {
       .animation(.snappy, value: viewModel.counter.value)
   }
 
-  /// The row of action buttons.
   fileprivate var buttonSection: some View {
     HStack(spacing: 20) {
       CounterButton(
@@ -96,15 +70,12 @@ extension CounterView {
     }
   }
 
-  /// Displays the current step size for transparency.
   fileprivate var stepInfoSection: some View {
     Text("Step: \(viewModel.stepSize)")
       .font(.footnote)
       .foregroundStyle(Color.secondaryText)
   }
 }
-
-// MARK: - Preview
 
 #Preview {
   CounterView()
