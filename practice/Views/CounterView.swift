@@ -12,7 +12,7 @@ struct CounterView: View {
         headerSection
         counterDisplaySection
         buttonSection
-        stepInfoSection
+        stepPickerSection
       }
       .padding()
     }
@@ -70,10 +70,20 @@ extension CounterView {
     }
   }
 
-  fileprivate var stepInfoSection: some View {
-    Text("Step: \(viewModel.stepSize)")
-      .font(.footnote)
-      .foregroundStyle(Color.secondaryText)
+  fileprivate var stepPickerSection: some View {
+    VStack(spacing: 8) {
+      Text("Step Size")
+        .font(.footnote)
+        .foregroundStyle(Color.secondaryText)
+
+      Picker("Step Size", selection: $viewModel.stepSize) {
+        ForEach(CounterViewModel.availableSteps, id: \.self) { step in
+          Text("\(step)").tag(step)
+        }
+      }
+      .pickerStyle(.segmented)
+      .frame(width: 200)
+    }
   }
 }
 

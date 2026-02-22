@@ -5,7 +5,9 @@ final class CounterViewModel: ObservableObject {
 
   @Published private(set) var counter = Counter()
 
-  let stepSize: Int
+  static let availableSteps = [1, 5, 10]
+
+  @Published var stepSize: Int
 
   var displayValue: String {
     "\(counter.value)"
@@ -21,6 +23,10 @@ final class CounterViewModel: ObservableObject {
 
   init(stepSize: Int = 1) {
     self.stepSize = stepSize
+  }
+
+  func updateStepSize(_ newStepSize: Int) {
+    stepSize = newStepSize
   }
 
   func increment() {
