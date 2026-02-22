@@ -7,18 +7,19 @@
 
 import SwiftUI
 
+// MARK: - ContentView
+
+/// The root view of the application.
+/// Acts as the entry point and hosts the main screen.
 struct ContentView: View {
-    var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
-        }
-        .padding()
-    }
+
+  var body: some View {
+    CounterView()
+  }
 }
 
+// MARK: - Preview
+
 #Preview {
-    ContentView()
+  ContentView()
 }
