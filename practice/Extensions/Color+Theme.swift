@@ -10,4 +10,5 @@ extension Color {
 
   static let primaryText = Color.white
   static let secondaryText = Color.white.opacity(0.6)
+  static let surfaceColor = Color.white.opacity(0.08)
 }

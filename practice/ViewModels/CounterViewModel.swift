@@ -4,6 +4,9 @@ import Foundation
 final class CounterViewModel: ObservableObject {
 
   @Published private(set) var counter = Counter()
+  @Published private(set) var history: [HistoryEntry] = []
+
+  static let maxHistoryCount = 10
 
   static let availableSteps = [1, 5, 10]
 
@@ -30,14 +33,40 @@ final class CounterViewModel: ObservableObject {
   }
 
   func increment() {
-    counter.increment(by: stepSize)
+    record(.increment) {
+      counter.increment(by: stepSize)
+    }
   }
 
   func decrement() {
-    counter.decrement(by: stepSize)
+    record(.decrement) {
+      counter.decrement(by: stepSize)
+    }
   }
 
   func reset() {
-    counter.reset()
+    record(.reset) {
+      counter.reset()
+    }
+  }
+
+  func clearHistory() {
+    history.removeAll()
+  }
+
+  private func record(_ action: HistoryEntry.Action, mutation: () -> Void) {
+    let previousValue = counter.value
+    mutation()
+    let entry = HistoryEntry(
+      action: action,
+      fromValue: previousValue,
+      toValue: counter.value,
+      stepSize: stepSize,
+      timestamp: Date()
+    )
+    history.insert(entry, at: 0)
+    if history.count > Self.maxHistoryCount {
+      history.removeLast()
+    }
   }
 }
