@@ -1,5 +1,9 @@
 import SwiftUI
 
+// MARK: - Counter View
+
+/// The main screen of the CountUp app displaying the counter value,
+/// action buttons, step-size picker, and an action history log.
 struct CounterView: View {
   @StateObject private var viewModel = CounterViewModel()
 
@@ -26,7 +30,9 @@ struct CounterView: View {
 // MARK: - Subviews
 
 extension CounterView {
-  fileprivate var headerSection: some View {
+
+  /// App title and subtitle.
+  private var headerSection: some View {
     VStack(spacing: 4) {
       Text("Counter")
         .font(.largeTitle)
@@ -37,17 +43,22 @@ extension CounterView {
         .font(.subheadline)
         .foregroundStyle(Color.secondaryText)
     }
+    .accessibilityElement(children: .combine)
   }
 
-  fileprivate var counterDisplaySection: some View {
+  /// Large animated counter value display.
+  private var counterDisplaySection: some View {
     Text(viewModel.displayValue)
       .font(.system(size: 96, weight: .bold, design: .rounded))
       .foregroundStyle(Color.appAccent)
       .contentTransition(.numericText(value: Double(viewModel.counter.value)))
       .animation(.snappy, value: viewModel.counter.value)
+      .accessibilityIdentifier("counterDisplay")
+      .accessibilityLabel("Counter value: \(viewModel.displayValue)")
   }
 
-  fileprivate var buttonSection: some View {
+  /// Increment, reset, and decrement action buttons.
+  private var buttonSection: some View {
     HStack(spacing: 20) {
       CounterButton(
         title: "Decrement",
@@ -56,6 +67,7 @@ extension CounterView {
         isEnabled: viewModel.canDecrement,
         action: viewModel.decrement
       )
+      .accessibilityIdentifier("decrementButton")
 
       CounterButton(
         title: "Reset",
@@ -64,6 +76,7 @@ extension CounterView {
         isEnabled: viewModel.canReset,
         action: viewModel.reset
       )
+      .accessibilityIdentifier("resetButton")
 
       CounterButton(
         title: "Increment",
@@ -71,10 +84,12 @@ extension CounterView {
         color: .incrementColor,
         action: viewModel.increment
       )
+      .accessibilityIdentifier("incrementButton")
     }
   }
 
-  fileprivate var stepPickerSection: some View {
+  /// Segmented picker for selecting the counter step size.
+  private var stepPickerSection: some View {
     VStack(spacing: 8) {
       Text("Step Size")
         .font(.footnote)
@@ -87,11 +102,13 @@ extension CounterView {
       }
       .pickerStyle(.segmented)
       .frame(width: 200)
+      .accessibilityIdentifier("stepPicker")
     }
   }
 
+  /// Scrollable list of recent counter actions, shown only when history is non-empty.
   @ViewBuilder
-  fileprivate var historySection: some View {
+  private var historySection: some View {
     if !viewModel.history.isEmpty {
       VStack(spacing: 12) {
         HStack {
@@ -106,11 +123,12 @@ extension CounterView {
           }
           .font(.subheadline)
           .foregroundStyle(Color.secondaryText)
+          .accessibilityIdentifier("clearHistoryButton")
         }
 
         VStack(spacing: 8) {
           ForEach(viewModel.history) { entry in
-            HistoryRow(entry: entry)
+            HistoryRowView(entry: entry)
           }
         }
       }
@@ -121,47 +139,7 @@ extension CounterView {
   }
 }
 
-// MARK: - HistoryRow
-
-private struct HistoryRow: View {
-  let entry: HistoryEntry
-
-  private var actionColor: Color {
-    switch entry.action {
-    case .increment: .incrementColor
-    case .decrement: .decrementColor
-    case .reset: .resetColor
-    }
-  }
-
-  var body: some View {
-    HStack(spacing: 12) {
-      Image(systemName: entry.action.icon)
-        .font(.caption)
-        .fontWeight(.semibold)
-        .foregroundStyle(actionColor)
-        .frame(width: 28, height: 28)
-        .background(actionColor.opacity(0.15), in: RoundedRectangle(cornerRadius: 8))
-
-      Text(entry.action.rawValue)
-        .font(.subheadline)
-        .foregroundStyle(Color.primaryText)
-
-      Text("\(entry.fromValue) → \(entry.toValue)")
-        .font(.subheadline)
-        .foregroundStyle(Color.secondaryText)
-
-      Spacer()
-
-      Text(entry.timestamp, format: .dateTime.hour().minute().second())
-        .font(.caption2)
-        .foregroundStyle(Color.secondaryText)
-    }
-    .padding(.horizontal, 12)
-    .padding(.vertical, 10)
-    .background(Color.surfaceColor, in: RoundedRectangle(cornerRadius: 12))
-  }
-}
+// MARK: - Preview
 
 #Preview {
   CounterView()

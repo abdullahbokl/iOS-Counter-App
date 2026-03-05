@@ -1,10 +1,3 @@
-//
-//  Counter.swift
-//  practice
-//
-//  Created by Abdullah Elbokl on 22/02/2026.
-//
-
 import Foundation
 
 // MARK: - Counter Model
@@ -41,18 +34,4 @@ struct Counter {
   mutating func reset() {
     value = 0
   }
-}
-
-struct counter2 {
-
-  private(set) var value: Int
-
-  init(value: Int = 0) {
-    self.value = value
-  }
-
-  mutating func inc(incValue value: Int = 1) {
-    self.value += value
-  }
-
 }

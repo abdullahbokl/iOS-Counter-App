@@ -1,17 +1,11 @@
-//
-//  practiceApp.swift
-//  practice
-//
-//  Created by Abdullah Elbokl on 21/02/2026.
-//
-
 import SwiftUI
 
+/// The main entry point for the CountUp application.
 @main
-struct practiceApp: App {
-    var body: some Scene {
-        WindowGroup {
-            ContentView()
-        }
+struct CountUpApp: App {
+  var body: some Scene {
+    WindowGroup {
+      CounterView()
     }
+  }
 }
